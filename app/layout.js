@@ -6,7 +6,12 @@ import '@/app/_styles/globals.css';
 // объявляем метаданные
 export const metadata = {
     // заголовок сайта
-    title: 'Mountain Valley',
+    title: {
+        template: '%s / Mountain Valley',
+        default: 'Welcome / Mountain Valley',
+    },
+    description:
+        'Luxurious cabin hotel, located in the heart of the Italian Dolomites, surrounded by beautiful mountains and dark forests.',
 };
 
 export default function RootLayout({ children }) {

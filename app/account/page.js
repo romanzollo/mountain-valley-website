@@ -1,3 +1,8 @@
+// объявляем метаданные для текущей страницы
+export const metadata = {
+    title: 'Guest area',
+};
+
 export default function Page() {
     return (
         <div>
