@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
         <html lang="en">
             <body
                 // добавляем класс шрифта josefin.className для подключения шрифта
-                className={`${josefin.className} bg-primary-950 text-primary-100 min-h-screen flex flex-col antialiased`}
+                className={`${josefin.className} bg-primary-950 text-primary-100 min-h-screen flex flex-col antialiased relative`}
             >
                 <Header />
 
