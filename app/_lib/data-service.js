@@ -1,6 +1,7 @@
 import { eachDayOfInterval } from 'date-fns';
 
 import { supabase } from './supabase';
+import { notFound } from 'next/navigation';
 
 /////////////
 // GET
@@ -18,6 +19,9 @@ export async function getCabin(id) {
 
     if (error) {
         console.error(error);
+
+        // Если каюта не нашлась, то мы перенаправляем пользователя на страницу 404 через встроенную функцию next.js
+        notFound();
     }
 
     return data;
