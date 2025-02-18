@@ -4,6 +4,17 @@ import Image from 'next/image';
 
 import { getCabin } from '@/app/_lib/data-service';
 
+// генерация метаданных
+export async function generateMetadata({ params }) {
+    // достаем имя каюты через params
+    const { name } = await getCabin(params.cabinId);
+
+    // возвращаем сгенерированные метаданные
+    return {
+        title: `Cabin ${name}`,
+    };
+}
+
 export default async function Page({ params }) {
     // params - встроенный обьект содержащий значения параметров URL
 
