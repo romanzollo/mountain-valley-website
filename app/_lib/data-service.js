@@ -5,6 +5,7 @@ import { supabase } from './supabase';
 /////////////
 // GET
 
+// функция получения данных о каюте
 export async function getCabin(id) {
     const { data, error } = await supabase
         .from('cabins')
