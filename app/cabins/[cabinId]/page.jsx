@@ -2,7 +2,7 @@ import { EyeSlashIcon, MapPinIcon, UsersIcon } from '@heroicons/react/24/solid';
 
 import Image from 'next/image';
 
-import { getCabin } from '@/app/_lib/data-service';
+import { getCabin, getCabins } from '@/app/_lib/data-service';
 
 // генерация метаданных
 export async function generateMetadata({ params }) {
@@ -13,6 +13,18 @@ export async function generateMetadata({ params }) {
     return {
         title: `Cabin ${name}`,
     };
+}
+
+// генерация статических маршрутов
+export async function generateStaticParams() {
+    // получаем данные о всех каютах
+    const cabins = await getCabins();
+
+    // создаем массив со всеми возможными маршрутами (cabinId)
+    // cabinId - должен совпадать с [cabinId] в маршруте
+    const ids = cabins.map((cabin) => ({ cabinId: String(cabin.id) })); // cabin.id - должен быть строкой
+
+    return ids;
 }
 
 export default async function Page({ params }) {
