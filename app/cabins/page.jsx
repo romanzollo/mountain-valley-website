@@ -3,6 +3,12 @@ import { Suspense } from 'react';
 import CabinList from '@/app/_components/CabinList';
 import Spinner from '@/app/_components/Spinner';
 
+// вариант отключения кэширования данных всей страницы (ISR)
+// export const revalidate = 0;
+
+// задаем время обновления данных страницы и кэширования (ISR)
+export const revalidate = 3600; // 1 час (в секундах)
+
 // объявляем метаданные для текущей страницы
 export const metadata = {
     title: 'Cabins',
