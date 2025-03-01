@@ -31,9 +31,16 @@
 }
 
 /* For data picker */
+
 .rdp {
     --rdp-cell-size: 32px !important;
     --rdp-accent-color: theme('colors.accent.500') !important;
     --rdp-background-color: theme('colors.accent.600') !important;
+    --rdp-months: theme('colors.accent.200') !important;
     margin: 0 !important;
+}
+
+.rdp-dropdown {
+    background-color: theme('colors.primary.800');
+    color: theme('colors.primary.100');
 }

@@ -103,6 +103,7 @@ export async function getBookings(guestId) {
     return data;
 }
 
+// функция получения занятых дат
 export async function getBookedDatesByCabinId(cabinId) {
     let today = new Date();
     today.setUTCHours(0, 0, 0, 0);
@@ -120,7 +121,7 @@ export async function getBookedDatesByCabinId(cabinId) {
         throw new Error('Bookings could not get loaded');
     }
 
-    // Converting to actual dates to be displayed in the date picker
+    // преобразование в фактические даты для отображения в data-picker
     const bookedDates = data
         .map((booking) => {
             return eachDayOfInterval({
@@ -133,11 +134,15 @@ export async function getBookedDatesByCabinId(cabinId) {
     return bookedDates;
 }
 
+// функция получения настроек
 export async function getSettings() {
     const { data, error } = await supabase
         .from('settings')
         .select('*')
         .single();
+
+    // For testing
+    // await new Promise((res) => setTimeout(res, 2000));
 
     if (error) {
         console.error(error);
