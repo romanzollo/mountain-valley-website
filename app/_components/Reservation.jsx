@@ -4,6 +4,8 @@ import ReservationForm from '@/app/_components/ReservationForm';
 import { getBookedDatesByCabinId, getSettings } from '@/app/_lib/data-service';
 
 async function Reservation({ cabin }) {
+    // получаем данные настроек и какие даты заняты параллельно
+    // чтобы не блокировать пользовательский интерфейс
     const [settings, bookedDates] = await Promise.all([
         getSettings(),
         getBookedDatesByCabinId(cabin.id),

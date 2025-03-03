@@ -25,12 +25,14 @@ function ReservationForm({ cabin }) {
                     <select
                         name="numGuests"
                         id="numGuests"
-                        className="px-5 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm"
+                        className="px-5 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm focus:bg-primary-800
+                            focus:text-primary-200"
                         required
                     >
                         <option value="" key="">
                             Select number of guests...
                         </option>
+                        {/* формируем опции в зависимости от максимального количества гостей (maxCapacity) */}
                         {Array.from(
                             { length: maxCapacity },
                             (_, i) => i + 1

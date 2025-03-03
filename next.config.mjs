@@ -9,7 +9,7 @@ const nextConfig = {
                 hostname: 'bziutcdwmcgruciwuwxb.supabase.co',
                 port: '',
                 pathname: '/storage/v1/object/public/cabin-images/**',
-                search: '',
+                // search: '',
             },
         ],
     },
