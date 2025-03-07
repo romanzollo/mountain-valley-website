@@ -42,4 +42,8 @@
 
 .rdp-dropdown {
     background-color: theme('colors.primary.800') !important;
+    width: 130px !important;
+    border-radius: 0.125rem !important;
+    text-align: center !important;
+    padding: 5px !important;
 }

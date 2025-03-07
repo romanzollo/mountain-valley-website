@@ -3,6 +3,7 @@ import { Suspense } from 'react';
 import CabinList from '@/app/_components/CabinList';
 import Spinner from '@/app/_components/Spinner';
 import Filter from '@/app/_components/Filter';
+import ReservationReminder from '@/app/_components/ReservationReminder';
 
 // вариант отключения кэширования данных всей страницы (ISR)
 // export const revalidate = 0;
@@ -49,6 +50,9 @@ export default function Page({ searchParams }) {
             <Suspense fallback={<Spinner />} key={filter}>
                 {/* передаем параметр filter серверному компоненту CabinList */}
                 <CabinList filter={filter} />
+
+                {/* компонент напоминания о бронировании */}
+                <ReservationReminder />
             </Suspense>
         </div>
     );

@@ -1,5 +1,11 @@
+'use client';
+
+import { useReservation } from '@/app/_components/ReservationContext';
+
 function ReservationForm({ cabin }) {
-    // CHANGE
+    // достаем данные из контекста (через кастомный хук контекста)
+    const { range } = useReservation();
+
     const { maxCapacity } = cabin;
 
     return (
