@@ -13,6 +13,7 @@ const authConfig = {
 };
 
 export const {
+    // функция авторизации для дальнейшего использования в серверных компонентах
     auth,
     handlers: { GET, POST },
 } = NextAuth(authConfig);

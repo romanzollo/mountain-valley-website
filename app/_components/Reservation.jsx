@@ -1,7 +1,10 @@
 import DateSelector from '@/app/_components/DateSelector';
 import ReservationForm from '@/app/_components/ReservationForm';
 
+import LoginMessage from '@/app/_components/LoginMessage';
+
 import { getBookedDatesByCabinId, getSettings } from '@/app/_lib/data-service';
+import { auth } from '../_lib/auth';
 
 async function Reservation({ cabin }) {
     // получаем данные настроек и какие даты заняты параллельно
@@ -11,6 +14,9 @@ async function Reservation({ cabin }) {
         getBookedDatesByCabinId(cabin.id),
     ]);
 
+    // получаем данные о авторизованном пользователе
+    const session = await auth();
+
     return (
         <div className="grid grid-cols-2 border border-primary-800 min-h-[400px]">
             <DateSelector
@@ -19,7 +25,11 @@ async function Reservation({ cabin }) {
                 cabin={cabin}
             />
 
-            <ReservationForm cabin={cabin} />
+            {session?.user ? (
+                <ReservationForm cabin={cabin} user={session.user} />
+            ) : (
+                <LoginMessage />
+            )}
         </div>
     );
 }
