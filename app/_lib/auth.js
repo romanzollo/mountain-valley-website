@@ -10,6 +10,13 @@ const authConfig = {
             clientSecret: process.env.AUTH_GOOGLE_SECRET,
         }),
     ],
+    callbacks: {
+        // функция проверки авторизации
+        authorized({ auth, request }) {
+            // если пользователь авторизован то возвращаем true (разрешаем доступ)
+            return !!auth?.user; // !! - приводит к boolean
+        },
+    },
 };
 
 export const {
