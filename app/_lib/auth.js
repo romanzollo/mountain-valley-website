@@ -10,6 +10,7 @@ const authConfig = {
             clientSecret: process.env.AUTH_GOOGLE_SECRET,
         }),
     ],
+    // настраиваем коллбэки при авторизации
     callbacks: {
         // функция проверки авторизации
         authorized({ auth, request }) {
@@ -17,10 +18,16 @@ const authConfig = {
             return !!auth?.user; // !! - приводит к boolean
         },
     },
+    // настраиваем роуты чтобы пользователь перенаправлялся на нужную страницу при авторизации
+    pages: {
+        signIn: '/login',
+    },
 };
 
 export const {
     // функция авторизации для дальнейшего использования в серверных компонентах
     auth,
+    signIn, // функция входа в систему
+    signOut, // функция выхода из системы
     handlers: { GET, POST },
 } = NextAuth(authConfig);

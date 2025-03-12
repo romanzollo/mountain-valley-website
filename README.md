@@ -13,5 +13,6 @@ Application built with Next.js and Supabase.
 -   @heroicons/react
 -   react-day-picker
 -   date-fns
+-   Auth.js + Middleware
 
 <!-- [Link to project](https://) -->
