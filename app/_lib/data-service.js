@@ -66,7 +66,7 @@ export async function getGuest(email) {
         .eq('email', email)
         .single();
 
-    // Здесь нет ошибки! Мы обрабатываем возможность отсутствия гостя при входе в callback.
+    // Здесь нет ошибки! Мы обрабатываем возможность отсутствия гостя при входе в систему в callback.
     return data;
 }
 
@@ -167,6 +167,7 @@ export async function getCountries() {
 /////////////
 // CREATE
 
+// функция создания и добавления гостя в базу данных
 export async function createGuest(newGuest) {
     const { data, error } = await supabase.from('guests').insert([newGuest]);
 
