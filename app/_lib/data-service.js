@@ -85,10 +85,11 @@ export async function getBooking(id) {
     return data;
 }
 
+// функция получения всех заказов (бронирований) конкретного пользователя
 export async function getBookings(guestId) {
     const { data, error, count } = await supabase
         .from('bookings')
-        // На самом деле нам также нужны данные о каютах. Но давайте брать ТОЛЬКО те данные, которые нам действительно нужны, чтобы уменьшить количество загружаемых данных.
+        // На самом деле нам также нужны данные о каютах. Но будем брать ТОЛЬКО те данные, которые нам действительно нужны, чтобы уменьшить количество загружаемых данных.
         .select(
             'id, created_at, startDate, endDate, numNights, numGuests, totalPrice, guestId, cabinId, cabins(name, image)'
         )
