@@ -199,7 +199,7 @@ export async function createBooking(newBooking) {
 // UPDATE
 
 // UpdateFields — это объект, который должен содержать ТОЛЬКО обновленные данные.
-export async function updateGuest(id, updatedFields) {
+/* export async function updateGuest(id, updatedFields) {
     const { data, error } = await supabase
         .from('guests')
         .update(updatedFields)
@@ -243,4 +243,4 @@ export async function deleteBooking(id) {
         throw new Error('Booking could not be deleted');
     }
     return data;
-}
+} */

@@ -1,14 +1,18 @@
 import SelectCountry from '@/app/_components/SelectCountry';
 import UpdateProfileForm from '@/app/_components/UpdateProfileForm';
 
+import { auth } from '@/app/_lib/auth';
+import { getGuest } from '@/app/_lib/data-service';
+
 export const metadata = {
     title: 'Update profile',
 };
 
-export default function Page() {
-    // CHANGE
-    const countryFlag = 'rus.jpg';
-    const nationality = 'russian';
+export default async function Page() {
+    // получаем данные сессии авторизованного пользователя
+    const session = await auth();
+    // получаем данные о госте для дальнейшей передачи в компоненты UpdateProfileForm и SelectCountry
+    const guest = await getGuest(session.user.email);
 
     return (
         <div>
@@ -21,12 +25,12 @@ export default function Page() {
             </p>
 
             {/* передаем в клиентский компонент серверный компонент в виде props (children) */}
-            <UpdateProfileForm>
+            <UpdateProfileForm guest={guest}>
                 <SelectCountry
                     name="nationality"
                     id="nationality"
                     className="px-5 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm"
-                    defaultCountry={nationality}
+                    defaultCountry={guest.nationality}
                 />
             </UpdateProfileForm>
         </div>

@@ -10,7 +10,7 @@ async function SelectCountry({ defaultCountry, name, id, className }) {
         <select
             name={name}
             id={id}
-            // здесь мы используем трюк, чтобы закодировать вместе названия страны и флага в значение. Затем мы снова разделим их позже в server action
+            // здесь мы используем трюк, чтобы закодировать вместе названия страны и флага в значение (страна%флаг). Затем мы снова разделим их позже в server action
             defaultValue={`${defaultCountry}%${flag}`}
             className={className}
         >
