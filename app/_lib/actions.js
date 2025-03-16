@@ -1,6 +1,8 @@
 /* компонент server action (будет выполняться только на сервере),то есть никогда не будет передоваться клиенту */
 'use server';
 
+import { revalidatePath } from 'next/cache';
+
 import { supabase } from '@/app/_lib/supabase';
 import { auth, signIn, signOut } from '@/app/_lib/auth';
 
@@ -39,6 +41,9 @@ export async function updateGuest(formData) {
         .eq('id', session.user.guestId); // обновляем данные гостя, когда наш созданный ранее id гостя в Auth.js при регистрации нового пользователя, равен id гостя в базе данных
 
     if (error) throw new Error('Guest could not be updated');
+
+    // обновляем данные гостя в кэше по нужному нам маршруту
+    revalidatePath('/account/profile');
 }
 
 export async function signInAction() {
