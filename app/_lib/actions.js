@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache';
 
 import { supabase } from '@/app/_lib/supabase';
 import { auth, signIn, signOut } from '@/app/_lib/auth';
+import { getBookings } from './data-service';
 
 export async function updateGuest(formData) {
     // formData (название можно любое) - объект с данными из формы предоставляемое next.js API при отправке формы в server action
@@ -44,6 +45,33 @@ export async function updateGuest(formData) {
 
     // обновляем данные гостя в кэше по нужному нам маршруту
     revalidatePath('/account/profile');
+}
+
+// удаление бронирований
+export async function deleteReservationAction(bookingId) {
+    // получаем сессию пользователя и проверяем авторизацию
+    const session = await auth();
+    if (!session) throw new Error('You must be logged in!');
+
+    /* защищаем данные от удаления не своих бронирований */
+    // получаем все бронирования
+    const guestBookings = await getBookings(session.user.guestId);
+    // получаем id всех бронирований
+    const guestBookingIds = guestBookings.map((booking) => booking.id);
+    // проверяем входит ли id бронирования в список бронирований гостя
+    if (!guestBookingIds.includes(bookingId))
+        throw new Error('You are not allowed to delete this booking!');
+
+    // удаляем бронь из базы данных supabase
+    const { error } = await supabase
+        .from('bookings')
+        .delete()
+        .eq('id', bookingId);
+
+    if (error) throw new Error('Booking could not be deleted');
+
+    // обновляем данные гостя в кэше по нужному нам маршруту
+    revalidatePath('/account/reservations');
 }
 
 export async function signInAction() {
