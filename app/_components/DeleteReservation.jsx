@@ -6,9 +6,7 @@ import { useTransition } from 'react';
 
 import SpinnerMini from '@/app/_components/SpinnerMini';
 
-import { deleteReservationAction } from '@/app/_lib/actions';
-
-function DeleteReservation({ bookingId }) {
+function DeleteReservation({ bookingId, onDelete }) {
     // useTransition - обновляет состояние компонента без блокировки пользовательского интерфейса
     // используем если хотим отображать индикатор загрузки при использовании server action напрямую с кнопки (onClick) а не формы
     const [isPending, startTransition] = useTransition();
@@ -18,7 +16,7 @@ function DeleteReservation({ bookingId }) {
         // спрашиваем у пользователя
         if (confirm('Are you sure you want to delete this reservation?'))
             // используем transition для отображения индикатора загрузки
-            startTransition(() => deleteReservationAction(bookingId));
+            startTransition(() => onDelete(bookingId));
     }
 
     /* пример использования server action прямо в компоненте */

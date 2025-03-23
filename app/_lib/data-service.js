@@ -165,9 +165,6 @@ export async function getCountries() {
     }
 }
 
-/////////////
-// CREATE
-
 // функция создания и добавления гостя в базу данных
 export async function createGuest(newGuest) {
     const { data, error } = await supabase.from('guests').insert([newGuest]);

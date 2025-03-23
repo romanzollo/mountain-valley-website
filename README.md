@@ -14,5 +14,9 @@ Application built with Next.js and Supabase.
 -   react-day-picker
 -   date-fns
 -   Auth.js + Middleware
+-   Supabase
+-   Tailwind CSS
+-   Server Actions (Next.js)
+-   useOptimistic Hook
 
 <!-- [Link to project](https://) -->
