@@ -2,11 +2,14 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
+
+import { auth, signIn, signOut } from '@/app/_lib/auth';
+import { getBookings } from '@/app/_lib/data-service';
 
 import { supabase } from '@/app/_lib/supabase';
-import { auth, signIn, signOut } from '@/app/_lib/auth';
-import { getBookings } from './data-service';
 
+// обновление данных гостя
 export async function updateGuest(formData) {
     // formData (название можно любое) - объект с данными из формы предоставляемое next.js API при отправке формы в server action
     /* ---
@@ -47,6 +50,55 @@ export async function updateGuest(formData) {
     revalidatePath('/account/profile');
 }
 
+// обновление бронирований
+export async function updateBooking(formData) {
+    // formData (название можно любое) - объект с данными из формы предоставляемое next.js API при отправке формы в server action
+    /* ---
+        при использовании server action (т.е. при серверной разработке) важно 2 вещи: 
+            1. пользователь который запускает server action должен иметь разрешение на выполнение этого действия
+            2. мы должны считать все входные данные не безопасными
+    --- */
+
+    // получаем id бронирования из формы (скрытый инпут)
+    const bookingId = Number(formData.get('bookingId')); // преобразуем в число
+
+    /* 1. аутентификация */
+    const session = await auth();
+    if (!session) throw new Error('You must be logged in!');
+
+    /* 2. авторизация  */
+    // защищаем данные от обновления не своих бронирований
+    const guestBookings = await getBookings(session.user.guestId); // получаем все бронирования
+    const guestBookingIds = guestBookings.map((booking) => booking.id); // получаем id всех бронирований
+    // проверяем входит ли id бронирования в список бронирований гостя
+    if (!guestBookingIds.includes(bookingId))
+        throw new Error('You are not allowed to delete this booking!');
+
+    /* 3. создание обновленных данных */
+    const updateData = {
+        numGuests: Number(formData.get('numGuests')),
+        observations: formData.get('observations').slice(0, 1000), // обрезаем строку до 1000 символов
+    };
+
+    /* 4. мутация */
+    const { error } = await supabase
+        .from('bookings')
+        .update(updateData)
+        .eq('id', bookingId)
+        .select()
+        .single();
+
+    /* 5. обработка ошибок */
+    if (error) throw new Error('Booking could not be updated');
+
+    /* 6. обновление кэша */
+    revalidatePath('/account/reservations');
+    revalidatePath(`/account/reservations/edit/${bookingId}`);
+
+    /* 7. редирект */
+    redirect('/account/reservations');
+}
+
 // удаление бронирований
 export async function deleteReservationAction(bookingId) {
     // получаем сессию пользователя и проверяем авторизацию
@@ -74,11 +126,13 @@ export async function deleteReservationAction(bookingId) {
     revalidatePath('/account/reservations');
 }
 
+// авторизация
 export async function signInAction() {
     // авторизуем пользователя и переходим на страницу аккаунта
     await signIn('google', { redirectTo: '/account' }); // первый параметр - провайдер, второй - маршрут
 }
 
+// выход
 export async function signOutAction() {
     // выходим из системы и переходим на главную
     await signOut({ redirectTo: '/' });
