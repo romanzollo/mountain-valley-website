@@ -10,7 +10,7 @@ const initialState = { from: undefined, to: undefined };
 
 // создаем компонент провайдера контекста
 function ReservationProvider({ children }) {
-    // создаем состояние дат
+    // создаем состояние выбранных дат
     const [range, setRange] = useState(initialState);
 
     // функция для сброса дат

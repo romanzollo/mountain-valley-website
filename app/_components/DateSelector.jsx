@@ -1,11 +1,17 @@
 'use client';
 
-import { isWithinInterval } from 'date-fns';
+import {
+    differenceInDays,
+    isPast,
+    isSameDay,
+    isWithinInterval,
+} from 'date-fns';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 
 import { useReservation } from '@/app/_components/ReservationContext';
 
+// функция проверки занятых дат
 function isAlreadyBooked(range, datesArr) {
     return (
         range.from &&
@@ -20,11 +26,15 @@ function DateSelector({ settings, bookedDates, cabin }) {
     // достаем данные из контекста (через кастомный хук контекста)
     const { range, setRange, resetRange } = useReservation();
 
-    // CHANGE
-    const regularPrice = 23;
-    const discount = 23;
-    const numNights = 23;
-    const cabinPrice = 23;
+    // формируем диапазон дат которые могут быть выбраны
+    const displayRange = isAlreadyBooked(range, bookedDates) ? {} : range;
+
+    // вытаскиваем данные из cabin
+    const { regularPrice, discount } = cabin;
+    // динамически вычисляем количество ночей c помощью differenceInDays из date-fns
+    const numNights = differenceInDays(displayRange.to, displayRange.from);
+    // динамически вычисляем общую цену
+    const cabinPrice = numNights * (regularPrice - discount);
 
     // SETTINGS
     const { minBookingLength, maxBookingLength } = settings;
@@ -35,7 +45,7 @@ function DateSelector({ settings, bookedDates, cabin }) {
                 className="pt-12 place-self-center"
                 mode="range"
                 onSelect={(range) => setRange(range)}
-                selected={range}
+                selected={displayRange}
                 min={minBookingLength + 1}
                 max={maxBookingLength}
                 fromMonth={new Date()} // в новой версии - startMonth={new Date()}
@@ -43,6 +53,11 @@ function DateSelector({ settings, bookedDates, cabin }) {
                 toYear={new Date().getFullYear() + 5} // в новой версии - не исп.
                 captionLayout="dropdown"
                 numberOfMonths={2}
+                // отключаем прошедшие даты в календаре (с помощью isPast из date-fns) + даты которые уже заняты (с помощью isSameDay из date-fns)
+                disabled={(currentDate) =>
+                    isPast(currentDate) ||
+                    bookedDates.some((date) => isSameDay(date, currentDate))
+                }
             />
 
             <div className="flex items-center justify-between px-8 bg-accent-500 text-primary-800 h-[72px]">
