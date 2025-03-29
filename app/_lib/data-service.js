@@ -177,68 +177,18 @@ export async function createGuest(newGuest) {
     return data;
 }
 
-export async function createBooking(newBooking) {
-    const { data, error } = await supabase
-        .from('bookings')
-        .insert([newBooking])
-        // Чтобы вновь созданный объект был возвращен!
-        .select()
-        .single();
+// export async function createBooking(newBooking) {
+//     const { data, error } = await supabase
+//         .from('bookings')
+//         .insert([newBooking])
+//         // Чтобы вновь созданный объект был возвращен!
+//         .select()
+//         .single();
 
-    if (error) {
-        console.error(error);
-        throw new Error('Booking could not be created');
-    }
+//     if (error) {
+//         console.error(error);
+//         throw new Error('Booking could not be created');
+//     }
 
-    return data;
-}
-
-/////////////
-// UPDATE
-
-// UpdateFields — это объект, который должен содержать ТОЛЬКО обновленные данные.
-/* export async function updateGuest(id, updatedFields) {
-    const { data, error } = await supabase
-        .from('guests')
-        .update(updatedFields)
-        .eq('id', id)
-        .select()
-        .single();
-
-    if (error) {
-        console.error(error);
-        throw new Error('Guest could not be updated');
-    }
-    return data;
-}
-
-export async function updateBooking(id, updatedFields) {
-    const { data, error } = await supabase
-        .from('bookings')
-        .update(updatedFields)
-        .eq('id', id)
-        .select()
-        .single();
-
-    if (error) {
-        console.error(error);
-        throw new Error('Booking could not be updated');
-    }
-    return data;
-}
-
-/////////////
-// DELETE
-
-export async function deleteBooking(id) {
-    const { data, error } = await supabase
-        .from('bookings')
-        .delete()
-        .eq('id', id);
-
-    if (error) {
-        console.error(error);
-        throw new Error('Booking could not be deleted');
-    }
-    return data;
-} */
+//     return data;
+// }

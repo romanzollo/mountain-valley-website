@@ -4,7 +4,7 @@ import { useOptimistic } from 'react';
 
 import ReservationCard from '@/app/_components/ReservationCard';
 
-import { deleteReservationAction } from '@/app/_lib/actions';
+import { deleteBooking } from '@/app/_lib/actions';
 
 function ReservationList({ bookings }) {
     const [optimisticBookings, optimisticDelete] = useOptimistic(
@@ -25,7 +25,7 @@ function ReservationList({ bookings }) {
         optimisticDelete(bookingId);
 
         // после уже удаляем бронь из базы данных через server action
-        await deleteReservationAction(bookingId);
+        await deleteBooking(bookingId);
     }
 
     return (

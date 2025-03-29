@@ -99,8 +99,44 @@ export async function updateBooking(formData) {
     redirect('/account/reservations');
 }
 
+// создание бронирования
+export async function createBooking(bookingData, formData) {
+    // formData (название можно любое) - объект с данными из формы предоставляемое next.js API при отправке формы в server action
+    // добавляем bookingData чтобы formData передавался последним (НЕ ПЕРВЫМ) аргументом!!!, т.к. мы используем метод bind в ReservationForm.jsx !!! ('обходной путь' передачи дополнительных данных вместо скрытых инпутов из документации next.js)
+
+    // получаем сессию пользователя и проверяем авторизацию
+    const session = await auth();
+    if (!session) throw new Error('You must be logged in!');
+
+    // создаем объект с данными нового бронирования
+    const newBooking = {
+        ...bookingData,
+        guestId: session.user.guestId,
+        numGuests: Number(formData.get('numGuests')),
+        observations: formData.get('observations').slice(0, 1000),
+        extrasPrice: 0,
+        totalPrice: bookingData.cabinPrice,
+        isPaid: false,
+        hasBreakfast: false,
+        status: 'unconfirmed',
+    };
+    // вариант использования если у нас много данных в форме formData (чтобы не использовать постоянно formData.get(...))
+    // Object.entries(formData.entries())
+
+    // добавляем новое бронирование в базу данных supabase
+    const { error } = await supabase.from('bookings').insert([newBooking]);
+
+    if (error) throw new Error('Booking could not be created');
+
+    // обновляем кэш
+    revalidatePath(`/cabins/${bookingData.cabinId}`);
+
+    // редирект
+    redirect('/cabins/thankyou');
+}
+
 // удаление бронирований
-export async function deleteReservationAction(bookingId) {
+export async function deleteBooking(bookingId) {
     // For testing
     // await new Promise((res) => setTimeout(res, 2000));
 

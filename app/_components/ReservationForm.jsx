@@ -1,12 +1,38 @@
 'use client';
 
+import { differenceInDays, formatDate } from 'date-fns';
+
 import { useReservation } from '@/app/_components/ReservationContext';
+
+import { createBooking } from '@/app/_lib/actions';
+import SubmitButton from './SubmitButton';
 
 function ReservationForm({ cabin, user }) {
     // достаем данные из контекста (через кастомный хук контекста)
-    const { range } = useReservation();
+    const { range, resetRange } = useReservation();
 
-    const { maxCapacity } = cabin;
+    // вытаскиваем нужные нам данные из cabin
+    const { maxCapacity, regularPrice, discount, id } = cabin;
+
+    // вычисляем начало и конец выбранного диапазона бронирования
+    const startDate = range.from;
+    const endDate = range.to;
+
+    // вычисляем количество ночей (с помощью differenceInDays из date-fns) и общую цену
+    const numNights = differenceInDays(endDate, startDate);
+    const cabinPrice = numNights * (regularPrice - discount);
+
+    // формируем данные для дальнейшего бронирования
+    const bookingData = {
+        startDate,
+        endDate,
+        numNights,
+        cabinPrice,
+        cabinId: id,
+    };
+
+    // создаем функцию и используем bind чтобы передать данные для бронирования  в server action (трюк для передачи дополнительных данных вместо скрытых инпутов из документации next.js!!!)
+    const createBookingWithData = createBooking.bind(null, bookingData);
 
     return (
         <div className="scale-[1.01]">
@@ -25,11 +51,22 @@ function ReservationForm({ cabin, user }) {
                 </div>
             </div>
 
-            <form className="bg-primary-900 py-10 px-16 text-lg flex gap-5 flex-col">
+            <form
+                // action={createBookingWithData}
+
+                // трюк с использованием server action в ручную чтобы можно было использовать функцию сброса диапазона дат (resetRange) из контекста (ReservationContext) в серверном компоненте + отключение уже выбранных дат
+                action={async (formData) => {
+                    await createBookingWithData(formData);
+
+                    // сбрасываем диапазон дат
+                    resetRange();
+                }}
+                className="bg-primary-900 py-10 px-16 text-lg flex gap-5 flex-col"
+            >
                 <div className="space-y-2">
                     <label htmlFor="numGuests">How many guests?</label>
                     <select
-                        name="numGuests"
+                        name="numGuests" // добавляем name в select чтобы отправлять его в action
                         id="numGuests"
                         className="px-5 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm focus:bg-primary-800
                             focus:text-primary-200"
@@ -55,7 +92,7 @@ function ReservationForm({ cabin, user }) {
                         Anything we should know about your stay?
                     </label>
                     <textarea
-                        name="observations"
+                        name="observations" // добавляем name в textarea чтобы отправлять его в action
                         id="observations"
                         className="px-5 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm"
                         placeholder="Any pets, allergies, special requirements, etc.?"
@@ -63,13 +100,15 @@ function ReservationForm({ cabin, user }) {
                 </div>
 
                 <div className="flex justify-end items-center gap-6">
-                    <p className="text-primary-300 text-base">
-                        Start by selecting dates
-                    </p>
-
-                    <button className="bg-accent-500 px-8 py-4 text-primary-800 font-semibold hover:bg-accent-600 transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:text-gray-300">
-                        Reserve now
-                    </button>
+                    {!(startDate && endDate) ? (
+                        <p className="text-primary-300 text-base">
+                            Start by selecting dates
+                        </p>
+                    ) : (
+                        <SubmitButton pendingLabel="Reserving...">
+                            Reserve now
+                        </SubmitButton>
+                    )}
                 </div>
             </form>
         </div>
