@@ -1,4 +1,5 @@
 /* компонент server action (будет выполняться только на сервере),то есть никогда не будет передоваться клиенту */
+// use server - всегда используется в server action
 'use server';
 
 import { revalidatePath } from 'next/cache';
@@ -153,6 +154,11 @@ export async function deleteBooking(bookingId) {
     if (!guestBookingIds.includes(bookingId))
         throw new Error('You are not allowed to delete this booking!');
 
+    // получаем id кабины по id бронирования (для обновления кэша)
+    const cabinId = guestBookings.find(
+        (booking) => booking.id === bookingId
+    ).cabinId;
+
     // удаляем бронь из базы данных supabase
     const { error } = await supabase
         .from('bookings')
@@ -163,6 +169,7 @@ export async function deleteBooking(bookingId) {
 
     // обновляем данные гостя в кэше по нужному нам маршруту
     revalidatePath('/account/reservations');
+    revalidatePath(`/cabins/${cabinId}`);
 }
 
 // авторизация
