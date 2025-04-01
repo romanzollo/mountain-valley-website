@@ -12,7 +12,8 @@ async function SelectCountry({ defaultCountry, name, id, className }) {
             id={id}
             // здесь мы используем трюк, чтобы закодировать вместе названия страны и флага в значение (страна%флаг). Затем мы снова разделим их позже в server action
             defaultValue={`${defaultCountry}%${flag}`}
-            className={className}
+            className={`${className} bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm focus:rounded-sm focus:bg-primary-800
+                            focus:text-primary-200`}
         >
             <option value="">Select country...</option>
             {countries.map((c) => (

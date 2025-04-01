@@ -4,8 +4,9 @@ import { differenceInDays, formatDate } from 'date-fns';
 
 import { useReservation } from '@/app/_components/ReservationContext';
 
-import { createBooking } from '@/app/_lib/actions';
 import SubmitButton from './SubmitButton';
+
+import { createBooking } from '@/app/_lib/actions';
 
 function ReservationForm({ cabin, user }) {
     // достаем данные из контекста (через кастомный хук контекста)
