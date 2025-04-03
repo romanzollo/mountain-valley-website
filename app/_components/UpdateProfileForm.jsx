@@ -63,7 +63,8 @@ function UpdateProfileForm({ guest, children }) {
                 <input
                     defaultValue={nationalID}
                     name="nationalID"
-                    className="px-5 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm"
+                    className="px-5 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm focus:rounded-sm focus:bg-primary-800
+                            focus:text-primary-200"
                 />
             </div>
 

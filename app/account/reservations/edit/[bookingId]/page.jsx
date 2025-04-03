@@ -31,7 +31,8 @@ export default async function Page({ params }) {
                         name="numGuests"
                         id="numGuests"
                         defaultValue={numGuests}
-                        className="px-5 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm"
+                        className="px-5 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm focus:rounded-sm focus:bg-primary-800
+                            focus:text-primary-200"
                         required
                     >
                         <option value="" key="">
@@ -54,7 +55,8 @@ export default async function Page({ params }) {
                     </label>
                     <textarea
                         name="observations"
-                        className="px-5 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm"
+                        className="px-5 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm focus:rounded-sm focus:bg-primary-800
+                            focus:text-primary-200"
                         defaultValue={observations}
                     />
                 </div>

@@ -95,7 +95,8 @@ function ReservationForm({ cabin, user }) {
                     <textarea
                         name="observations" // добавляем name в textarea чтобы отправлять его в action
                         id="observations"
-                        className="px-5 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm"
+                        className="px-5 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm focus:rounded-sm focus:bg-primary-800
+                            focus:text-primary-200"
                         placeholder="Any pets, allergies, special requirements, etc.?"
                     />
                 </div>
