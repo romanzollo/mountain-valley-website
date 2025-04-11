@@ -20,7 +20,7 @@ export default function Page() {
 
             <div className="relative z-10 text-center">
                 <h1 className="text-8xl text-primary-50 mb-10 tracking-tight font-normal">
-                    Welcome to paradise.
+                    Where the wild meets serenity
                 </h1>
                 <Link
                     href="/cabins"
