@@ -1,5 +1,8 @@
 #### **Mountain Valley Website**
 
+![App Preview](screenshots/screenshot-1.png)  
+_Custom-built application to manage everything about the hotel: bookings, cabins, and guests._
+
 A customer-facing website where guests can learn about the hotel, browse all cabins, and manage their profiles. This website is integrated with the internal management app through a shared Supabase database and API.
 
 ---
