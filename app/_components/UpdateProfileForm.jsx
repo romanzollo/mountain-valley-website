@@ -3,6 +3,7 @@
 import { useState } from 'react';
 
 import SubmitButton from '@/app/_components/SubmitButton';
+import worldFlag from '@/public/world-flag.svg'; // Импортируем файл
 
 import { updateGuest } from '@/app/_lib/actions';
 
@@ -11,6 +12,8 @@ function UpdateProfileForm({ guest, children }) {
 
     // достаем нужные нам данные гостя
     const { fullName, email, nationality, nationalID, countryFlag } = guest;
+
+    const flagSrc = countryFlag || worldFlag.src; // Если countryFlag отсутствует, используем worldFlag
 
     return (
         <form
@@ -48,8 +51,10 @@ function UpdateProfileForm({ guest, children }) {
                 <div className="flex items-center justify-between">
                     <label htmlFor="nationality">Where are you from?</label>
                     <img
-                        src={countryFlag}
-                        alt="Country flag"
+                        src={flagSrc}
+                        alt={
+                            countryFlag ? 'Country flag' : 'Default world flag'
+                        }
                         className="h-5 rounded-sm"
                     />
                 </div>
